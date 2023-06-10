@@ -2,6 +2,10 @@
 
 {% block content %}
   <h1>Book List</h1>
+  {% if perms.catalog.add_book %}
+    <a href="{% url 'book-create' %}">Add a book</a>
+  {% endif %}
+  
   {% if book_list %}
     <ul>
       {% for book in book_list %}

@@ -137,3 +137,21 @@ class AuthorDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'catalog.delete_author'
     model = Author
     success_url = reverse_lazy('authors')
+
+# editing class-based views for a book
+class BookCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'catalog.add_book'
+    model = Book
+    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
+
+class BookUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'catalog.change_book'
+    model = Book
+    # for fields, '__all__' is not recommended because of security reasons:
+    # the form will include any new fields that a developer may add
+    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
+
+class BookDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'catalog.delete_book'
+    model = Book
+    success_url = reverse_lazy('books')
