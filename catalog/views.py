@@ -122,17 +122,18 @@ from django.urls import reverse_lazy
 from catalog.models import Author
 
 class AuthorCreate(PermissionRequiredMixin, CreateView):
-    permission_required = 'catalog.can_manipulate_authors'
+    permission_required = 'catalog.add_author'
     model = Author
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
-    initial = {'date_of_death': '11/06/2020'}
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = 'catalog.can_manipulate_authors'
+    permission_required = 'catalog.change_author'
     model = Author
-    fields = '__all__' # Not recommended (potential security issue if more fields added)
+    # for fields, '__all__' is not recommended because of security reasons:
+    # the form will include any new fields that a developer may add
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = 'catalog.can_manipulate_authors'
+    permission_required = 'catalog.delete_author'
     model = Author
     success_url = reverse_lazy('authors')

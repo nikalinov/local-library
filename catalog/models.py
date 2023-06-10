@@ -82,14 +82,8 @@ class BookInstance(models.Model):
 
 class Author(models.Model):
     """Model representing an author"""
-    first_name = models.CharField(
-        max_length=50,
-        help_text='Enter the author\'s first name'
-    )
-    last_name = models.CharField(
-        max_length=50,
-        help_text='Enter the author\'s last name'
-    )
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField('Died', null=True, blank=True)
 
