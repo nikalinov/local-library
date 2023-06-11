@@ -46,7 +46,7 @@ class BookDetailView(generic.DetailView):
 
 class AuthorListView(generic.ListView):
     model = Author
-    paginate_by = 8
+    paginate_by = 10
     ordering = ['last_name']
 
 class AuthorDetailView(generic.DetailView):
