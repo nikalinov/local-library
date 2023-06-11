@@ -3,7 +3,7 @@
 {% block content %}
   <h1>Author List</h1>
   {% if perms.catalog.add_author %}
-    <a href="{% url 'author-create' %}">Create author</a>
+    <a href="{% url 'author-create' %}">Add an author</a>
   {% endif %}
   {% if author_list %}
     <ul>
