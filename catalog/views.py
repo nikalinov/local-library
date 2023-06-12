@@ -124,6 +124,7 @@ from catalog.models import Author
 class AuthorCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'catalog.add_author'
     model = Author
+    initial = {'date_of_death': datetime.date.today()}
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):

@@ -299,3 +299,33 @@ class RenewBookInstancesViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFormError(response, 'form', 'due_back', 'Invalid date - renewal more than 4 weeks ahead')
 
+class AuthorCreateTest(TestCase):
+    def setUp(self):
+        test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
+        test_user2 = User.objects.create_user(username='testuser2', password='2HJ1vRV0Z&3iD')
+        test_user1.save()
+        test_user2.save()
+        test_author = Author.objects.create(first_name = 'Name', last_name='Surname')
+        test_author.save()
+
+        # Give test_user2 permission to create authors.
+        permission = Permission.objects.get(name='Can add author')
+        test_user2.user_permissions.add(permission)
+        test_user2.save()
+
+    def test_logged_out_not_allowed_to_add_authors(self):
+        response = self.client.get(reverse('author-create'))
+        self.assertTrue(response.url.startswith('/accounts/login/'))
+
+    def test_user1_not_allowed_to_add_authors(self):
+        self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.get(reverse('author-create'))
+        self.assertEqual(response.status_code, 403)
+
+    def test_user2_allowed_to_add_authors(self):
+        self.client.login(username='testuser2', password='2HJ1vRV0Z&3iD')
+        response = self.client.get(reverse('author-create'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'catalog/author_form.html')
+        self.assertEqual(response.context['form'].initial['date_of_death'], datetime.date.today())
