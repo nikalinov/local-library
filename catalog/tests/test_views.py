@@ -163,3 +163,16 @@ class LoanedBookInstancesByUserListViewTest(TestCase):
                 self.assertTrue(last_date <= book.due_back)
                 last_date = book.due_back
 
+    def test_paginated_by_10(self):
+        login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+
+        books = BookInstance.objects.all()
+        for book in books:
+            book.status = 'o'
+            book.save()
+
+        response = self.client.get(reverse('my-borrowed'))
+
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertEqual(len(response.context['bookinstance_list']), 10)
